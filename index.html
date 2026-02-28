@@ -42,12 +42,39 @@ nav{
   gap:20px;
 }
 
-nav a{
+/* menu link */
+.nav-links a{
   text-decoration:none;
   color:var(--text);
   font-weight:500;
+  position:relative;
+  padding-bottom:6px;
 }
-nav a:hover{color:var(--primary);}
+
+/* garis indikator */
+.nav-links a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-4px;
+  width:0%;
+  height:3px;
+  background:var(--primary);
+  border-radius:3px;
+  transition:.3s ease;
+}
+
+/* hover animasi */
+.nav-links a:hover::after{
+  width:100%;
+}
+
+/* menu aktif */
+.nav-links a.active::after{
+  width:100%;
+}
+
+.nav-links a:hover{color:var(--primary);}
 
 .toggle{
   background:var(--primary);
@@ -166,6 +193,14 @@ footer{
 </footer>
 
 <script>
+// ===== NAV ACTIVE AUTO =====
+const currentPage = location.pathname.split("/").pop();
+document.querySelectorAll(".nav-links a").forEach(link=>{
+  if(link.getAttribute("href") === currentPage){
+    link.classList.add("active");
+  }
+});
+
 // ===== DARK MODE + ICON =====
 const toggleBtn = document.getElementById('themeToggle');
 
