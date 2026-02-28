@@ -57,9 +57,33 @@ nav a{
   text-decoration:none;
   color:var(--text);
   font-weight:500;
+  position:relative;
+  padding-bottom:6px;
 }
 nav a:hover{color:var(--primary);}
 
+/* ===== GARIS INDIKATOR ===== */
+nav a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-4px;
+  width:0%;
+  height:3px;
+  background:var(--primary);
+  border-radius:3px;
+  transition:.3s ease;
+}
+
+nav a:hover::after{
+  width:100%;
+}
+
+nav a.active::after{
+  width:100%;
+}
+
+/* Toggle */
 .toggle{
   background:var(--primary);
   border:none;
@@ -90,7 +114,7 @@ h2{
   font-weight:500;
 }
 
-/* MAP CARD */
+/* MAP */
 .map-container{
   width:100%;
   max-width:600px;
@@ -108,7 +132,7 @@ iframe{
   border:0;
 }
 
-/* WHATSAPP BUTTON */
+/* WhatsApp */
 .whatsapp-btn{
   display:inline-block;
   background-color:var(--whatsapp);
@@ -126,7 +150,7 @@ iframe{
   transform:translateY(-2px);
 }
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 footer{
   margin-top:40px;
   padding:20px;
@@ -135,7 +159,7 @@ footer{
   text-align:center;
 }
 
-/* Fade Animasi */
+/* Fade */
 .fade-text{
   opacity:0;
   transform:translateY(30px);
@@ -146,7 +170,7 @@ footer{
   transform:translateY(0);
 }
 
-/* ===== MOBILE ===== */
+/* MOBILE */
 @media(max-width:768px){
   nav{
     flex-direction:column;
@@ -200,7 +224,15 @@ footer{
 </footer>
 
 <script>
-// DARK MODE + ICON
+// ===== AUTO ACTIVE MENU =====
+const currentPage = location.pathname.split("/").pop();
+document.querySelectorAll(".nav-links a").forEach(link=>{
+  if(link.getAttribute("href") === currentPage){
+    link.classList.add("active");
+  }
+});
+
+// DARK MODE
 const toggleBtn = document.getElementById('themeToggle');
 
 function setTheme(mode){
@@ -214,29 +246,22 @@ function setTheme(mode){
   localStorage.setItem('theme', mode);
 }
 
-const savedTheme = localStorage.getItem('theme') || 'light';
-setTheme(savedTheme);
+setTheme(localStorage.getItem('theme') || 'light');
 
 toggleBtn.addEventListener('click', () => {
   const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
   setTheme(newTheme);
 });
 
-// Fade Scroll
+// Fade scroll
 const faders=document.querySelectorAll('.fade-text');
-const appearOptions={threshold:0.2};
-
-const appearOnScroll=new IntersectionObserver(entries=>{
+const observer=new IntersectionObserver(entries=>{
   entries.forEach(entry=>{
-    if(!entry.isIntersecting){
-      entry.target.classList.remove('visible');
-    }else{
-      entry.target.classList.add('visible');
-    }
+    entry.target.classList.toggle('visible', entry.isIntersecting);
   });
-}, appearOptions);
+},{threshold:0.2});
 
-faders.forEach(fader=>appearOnScroll.observe(fader));
+faders.forEach(el=>observer.observe(el));
 </script>
 
 </body>
