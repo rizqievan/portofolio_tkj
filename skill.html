@@ -31,7 +31,7 @@ body{
   overflow-x:hidden;
 }
 
-/* ===== NAVBAR ===== */
+/* NAVBAR */
 nav{
   display:flex;
   justify-content:space-between;
@@ -61,41 +61,57 @@ nav a{
 }
 nav a:hover{color:var(--primary);}
 
-/* ===== INDIKATOR GARIS ===== */
 nav a::after{
   content:"";
   position:absolute;
   left:0;
   bottom:-4px;
-  width:0%;
+  width:0;
   height:3px;
   background:var(--primary);
   border-radius:3px;
-  transition:.3s ease;
-}
-
-nav a:hover::after{
-  width:100%;
-}
-
-nav a.active::after{
-  width:100%;
-}
-
-/* Toggle */
-.toggle{
-  background:var(--primary);
-  border:none;
-  color:white;
-  padding:6px 12px;
-  border-radius:20px;
-  cursor:pointer;
-  font-size:16px;
   transition:.3s;
 }
-.toggle:hover{transform:scale(1.1);}
+nav a:hover::after{width:100%;}
+nav a.active{color:var(--primary);font-weight:600;}
+nav a.active::after{width:100%;}
 
-/* ===== CONTENT ===== */
+/* TOGGLE */
+.theme-toggle{
+  position: relative;
+  width: 70px;
+  height: 34px;
+  background: #e5e7eb;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  cursor: pointer;
+  transition: .3s;
+}
+.theme-toggle .icon{
+  font-size: 16px;
+  z-index: 2;
+  color: #6b7280;
+  pointer-events: none;
+}
+.toggle-indicator{
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background: white;
+  border-radius: 50%;
+  left: 4px;
+  transition: .35s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,.15);
+}
+body.dark .theme-toggle{ background:#111827; }
+body.dark .toggle-indicator{ left:38px; background:#374151; }
+body.dark .theme-toggle .icon.sun{ color:#9ca3af; }
+body.dark .theme-toggle .icon.moon{ color:#fff; }
+
+/* CONTENT */
 .container{
   max-width:800px;
   margin:60px auto 40px;
@@ -108,14 +124,9 @@ h2{
   color:var(--primary);
 }
 
-/* Skill */
 .skill{margin-bottom:25px;}
-.skill p{
-  margin-bottom:8px;
-  font-weight:500;
-}
+.skill p{margin-bottom:8px;font-weight:500;}
 
-/* Progress */
 .progress{
   height:12px;
   background:#cbd5e1;
@@ -128,10 +139,10 @@ h2{
   height:100%;
   width:0;
   background:var(--primary);
-  transition:2s;
+  transition:width 2s ease;
 }
 
-/* Footer */
+/* FOOTER */
 footer{
   margin-top:40px;
   text-align:center;
@@ -140,26 +151,21 @@ footer{
   color:white;
 }
 
-/* Fade */
+/* FADE */
 .fade-text{
   opacity:0;
   transform:translateY(30px);
   transition:opacity .8s ease, transform .8s ease;
+  will-change: opacity, transform;
 }
 .fade-text.visible{
   opacity:1;
   transform:translateY(0);
 }
 
-/* Mobile */
 @media(max-width:768px){
-  nav{
-    flex-direction:column;
-    gap:10px;
-  }
-  .nav-links{
-    flex-wrap:wrap;
-  }
+  nav{flex-direction:column;gap:10px;}
+  .nav-links{flex-wrap:wrap;}
 }
 </style>
 </head>
@@ -175,7 +181,11 @@ footer{
     <a href="kontak.html" class="fade-text">Kontak Saya</a>
   </div>
 
-  <button class="toggle fade-text" id="themeToggle">🌙</button>
+  <div class="theme-toggle fade-text" id="themeToggle">
+    <div class="toggle-indicator"></div>
+    <span class="icon sun">☀︎</span>
+    <span class="icon moon">⏾</span>
+  </div>
 </nav>
 
 <div class="container">
@@ -200,52 +210,51 @@ footer{
 </footer>
 
 <script>
-// ===== AUTO ACTIVE MENU =====
-const currentPage = location.pathname.split("/").pop();
+// DARK MODE
+const toggle=document.getElementById("themeToggle");
+toggle.onclick=()=>{
+  document.body.classList.toggle("dark");
+  localStorage.setItem("theme",
+    document.body.classList.contains("dark")?"dark":"light");
+};
+if(localStorage.getItem("theme")==="dark"){
+  document.body.classList.add("dark");
+}
 
+// ACTIVE MENU
+let currentPage=location.pathname.split("/").pop();
+if(currentPage===""||currentPage==="/"){currentPage="index.html";}
 document.querySelectorAll(".nav-links a").forEach(link=>{
-  if(link.getAttribute("href") === currentPage){
+  if(link.getAttribute("href")===currentPage){
     link.classList.add("active");
   }
 });
 
-// DARK MODE
-const toggleBtn = document.getElementById('themeToggle');
-
-function setTheme(mode){
-  if(mode === 'dark'){
-    document.body.classList.add('dark');
-    toggleBtn.textContent = "☀️";
-  }else{
-    document.body.classList.remove('dark');
-    toggleBtn.textContent = "🌙";
-  }
-  localStorage.setItem('theme', mode);
-}
-
-setTheme(localStorage.getItem('theme') || 'light');
-
-toggleBtn.addEventListener('click', () => {
-  const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
-  setTheme(newTheme);
-});
-
-// Fade scroll
+// FADE + PROGRESS ANIMATION
 const faders=document.querySelectorAll('.fade-text');
 const observer=new IntersectionObserver(entries=>{
   entries.forEach(entry=>{
     entry.target.classList.toggle('visible', entry.isIntersecting);
-  });
-},{threshold:0.2});
 
-faders.forEach(el=>observer.observe(el));
+    if(entry.isIntersecting && entry.target.classList.contains('skill')){
+      const bar=entry.target.querySelector('.progress span');
+      if(bar){
+        bar.style.width=bar.dataset.width;
+      }
+    }
 
-// Progress animation
-window.addEventListener('load',()=>{
-  document.querySelectorAll('.progress span').forEach(el=>{
-    el.style.width = el.dataset.width;
+    if(!entry.isIntersecting && entry.target.classList.contains('skill')){
+      const bar=entry.target.querySelector('.progress span');
+      if(bar){
+        bar.style.width="0";
+      }
+    }
   });
+},{
+  threshold:0.15,
+  rootMargin:"0px 0px -40px 0px"
 });
+faders.forEach(el=>observer.observe(el));
 </script>
 
 </body>
