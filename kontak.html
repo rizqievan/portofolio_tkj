@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontak Saya | Portofolio TKJ</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f8fafc;
+  --text:#0f172a;
+  --card:#ffffff;
+  --primary:#2563eb;
+  --footer:#1e293b;
+  --whatsapp:#25d366;
+}
+body.dark{
+  --bg:#0f172a;
+  --text:#e2e8f0;
+  --card:rgba(30,41,59,0.8);
+  --footer:#111827;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:.4s;
+  overflow-x:hidden;
+}
+
+/* ===== NAVBAR ===== */
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 40px;
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(10px);
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+.nav-links{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex:1;
+  gap:20px;
+}
+
+nav a{
+  text-decoration:none;
+  color:var(--text);
+  font-weight:500;
+}
+nav a:hover{color:var(--primary);}
+
+.toggle{
+  background:var(--primary);
+  border:none;
+  color:white;
+  padding:6px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  font-size:16px;
+  transition:.3s;
+}
+.toggle:hover{transform:scale(1.1);}
+
+/* ===== CONTENT ===== */
+.container{
+  max-width:800px;
+  margin:60px auto 40px;
+  padding:0 20px;
+  text-align:center;
+}
+
+h2{
+  margin-bottom:10px;
+  color:var(--primary);
+}
+
+.container p{
+  margin-bottom:20px;
+  font-weight:500;
+}
+
+/* MAP CARD */
+.map-container{
+  width:100%;
+  max-width:600px;
+  height:400px;
+  margin:0 auto 30px;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+  border:1px solid rgba(0,0,0,.05);
+}
+
+iframe{
+  width:100%;
+  height:100%;
+  border:0;
+}
+
+/* WHATSAPP BUTTON */
+.whatsapp-btn{
+  display:inline-block;
+  background-color:var(--whatsapp);
+  color:white;
+  padding:15px 30px;
+  border-radius:30px;
+  font-weight:600;
+  font-size:1.05rem;
+  text-decoration:none;
+  transition:.3s;
+  box-shadow:0 8px 18px rgba(37,211,102,.35);
+}
+.whatsapp-btn:hover{
+  background-color:#1ebe57;
+  transform:translateY(-2px);
+}
+
+/* ===== FOOTER ===== */
+footer{
+  margin-top:40px;
+  padding:20px;
+  background:var(--footer);
+  color:white;
+  text-align:center;
+}
+
+/* Fade Animasi */
+.fade-text{
+  opacity:0;
+  transform:translateY(30px);
+  transition:opacity .8s ease, transform .8s ease;
+}
+.fade-text.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  nav{
+    flex-direction:column;
+    gap:10px;
+  }
+  .nav-links{
+    flex-wrap:wrap;
+  }
+  .map-container{
+    height:300px;
+  }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <strong>Portofolio TKJ</strong>
+
+  <div class="nav-links">
+    <a href="index.html" class="fade-text">Beranda</a>
+    <a href="tentang.html" class="fade-text">Tentang</a>
+    <a href="skill.html" class="fade-text">Skill</a>
+    <a href="kontak.html" class="fade-text">Kontak Saya</a>
+  </div>
+
+  <button class="toggle fade-text" id="themeToggle">🌙</button>
+</nav>
+
+<div class="container fade-text">
+  <h2>Kontak Saya</h2>
+  <p>Email: evanrizqi2@email.com</p>
+  <p><strong>Alamat Rumah</strong></p>
+
+  <div class="map-container">
+    <iframe
+      src="https://www.google.com/maps?q=-8.109377,111.710771&hl=id&z=15&output=embed"
+      loading="lazy">
+    </iframe>
+  </div>
+
+  <a href="https://wa.me/6281234567890"
+     target="_blank"
+     class="whatsapp-btn fade-text">
+     Hubungi via WhatsApp
+  </a>
+</div>
+
+<footer class="fade-text">
+© 2026 Rizqi Evan Kurniansyah | All Rights Reserved
+</footer>
+
+<script>
+// DARK MODE + ICON
+const toggleBtn = document.getElementById('themeToggle');
+
+function setTheme(mode){
+  if(mode === 'dark'){
+    document.body.classList.add('dark');
+    toggleBtn.textContent = "☀️";
+  }else{
+    document.body.classList.remove('dark');
+    toggleBtn.textContent = "🌙";
+  }
+  localStorage.setItem('theme', mode);
+}
+
+const savedTheme = localStorage.getItem('theme') || 'light';
+setTheme(savedTheme);
+
+toggleBtn.addEventListener('click', () => {
+  const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
+  setTheme(newTheme);
+});
+
+// Fade Scroll
+const faders=document.querySelectorAll('.fade-text');
+const appearOptions={threshold:0.2};
+
+const appearOnScroll=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(!entry.isIntersecting){
+      entry.target.classList.remove('visible');
+    }else{
+      entry.target.classList.add('visible');
+    }
+  });
+}, appearOptions);
+
+faders.forEach(fader=>appearOnScroll.observe(fader));
+</script>
+
+</body>
+</html>
