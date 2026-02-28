@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kontak Saya | Portofolio TKJ</title>
+<title>Tentang | Portofolio TKJ</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
 <style>
 :root{
   --bg:#f8fafc;
@@ -13,7 +12,6 @@
   --card:#ffffff;
   --primary:#2563eb;
   --footer:#1e293b;
-  --whatsapp:#25d366;
 }
 body.dark{
   --bg:#0f172a;
@@ -21,9 +19,7 @@ body.dark{
   --card:rgba(30,41,59,0.8);
   --footer:#111827;
 }
-
 *{margin:0;padding:0;box-sizing:border-box;}
-
 body{
   font-family:'Poppins',sans-serif;
   background:var(--bg);
@@ -62,7 +58,7 @@ nav a{
 }
 nav a:hover{color:var(--primary);}
 
-/* ===== GARIS INDIKATOR ===== */
+/* ===== INDIKATOR GARIS AKTIF ===== */
 nav a::after{
   content:"";
   position:absolute;
@@ -83,7 +79,7 @@ nav a.active::after{
   width:100%;
 }
 
-/* Toggle */
+/* ===== TOGGLE ===== */
 .toggle{
   background:var(--primary);
   border:none;
@@ -101,56 +97,35 @@ nav a.active::after{
   max-width:800px;
   margin:60px auto 40px;
   padding:0 20px;
-  text-align:center;
 }
 
 h2{
-  margin-bottom:10px;
+  text-align:center;
+  margin-bottom:25px;
   color:var(--primary);
 }
 
-.container p{
-  margin-bottom:20px;
+.biodata{
+  text-align:justify;
+  margin-bottom:30px;
+  line-height:1.6;
+}
+
+.biodata p{
+  margin:6px 0;
   font-weight:500;
 }
 
-/* MAP */
-.map-container{
-  width:100%;
-  max-width:600px;
-  height:400px;
-  margin:0 auto 30px;
+.shape-text{
+  padding:25px;
   border-radius:20px;
-  overflow:hidden;
-  box-shadow:0 12px 30px rgba(0,0,0,.18);
-  border:1px solid rgba(0,0,0,.05);
+  background:var(--card);
+  box-shadow:0 10px 25px rgba(0,0,0,.15);
+  text-align:justify;
+  line-height:1.7;
 }
 
-iframe{
-  width:100%;
-  height:100%;
-  border:0;
-}
-
-/* WhatsApp */
-.whatsapp-btn{
-  display:inline-block;
-  background-color:var(--whatsapp);
-  color:white;
-  padding:15px 30px;
-  border-radius:30px;
-  font-weight:600;
-  font-size:1.05rem;
-  text-decoration:none;
-  transition:.3s;
-  box-shadow:0 8px 18px rgba(37,211,102,.35);
-}
-.whatsapp-btn:hover{
-  background-color:#1ebe57;
-  transform:translateY(-2px);
-}
-
-/* FOOTER */
+/* ===== FOOTER ===== */
 footer{
   margin-top:40px;
   padding:20px;
@@ -159,7 +134,7 @@ footer{
   text-align:center;
 }
 
-/* Fade */
+/* Fade Animasi */
 .fade-text{
   opacity:0;
   transform:translateY(30px);
@@ -170,7 +145,7 @@ footer{
   transform:translateY(0);
 }
 
-/* MOBILE */
+/* ===== MOBILE ===== */
 @media(max-width:768px){
   nav{
     flex-direction:column;
@@ -178,9 +153,6 @@ footer{
   }
   .nav-links{
     flex-wrap:wrap;
-  }
-  .map-container{
-    height:300px;
   }
 }
 </style>
@@ -200,23 +172,19 @@ footer{
   <button class="toggle fade-text" id="themeToggle">🌙</button>
 </nav>
 
-<div class="container fade-text">
-  <h2>Kontak Saya</h2>
-  <p>Email: evanrizqi2@email.com</p>
-  <p><strong>Alamat Rumah</strong></p>
+<div class="container">
+  <h2 class="fade-text">Tentang Saya</h2>
 
-  <div class="map-container">
-    <iframe
-      src="https://www.google.com/maps?q=-8.109377,111.710771&hl=id&z=15&output=embed"
-      loading="lazy">
-    </iframe>
+  <div class="biodata fade-text">
+    <p><b>Nama:</b> Rizqi Evan Kurniansyah</p>
+    <p><b>Sekolah:</b> SMK Negeri 1 Pogalan</p>
+    <p><b>Kelas:</b> X TKJ 1</p>
+    <p><b>Tempat, Tanggal Lahir:</b> Trenggalek, 07 Desember 2009</p>
   </div>
 
-  <a href="https://wa.me/6281234567890"
-     target="_blank"
-     class="whatsapp-btn fade-text">
-     Hubungi via WhatsApp
-  </a>
+  <div class="shape-text fade-text">
+    Saya adalah siswa Teknik Komputer dan Jaringan yang berfokus pada pengembangan kemampuan jaringan komputer dan sistem server. Selain mempelajari instalasi dan konfigurasi jaringan, saya juga mendalami manajemen server, keamanan jaringan, serta troubleshooting perangkat keras dan lunak. Saya memiliki semangat belajar tinggi, selalu mencoba mengikuti perkembangan teknologi terbaru, dan ingin membangun karir profesional di bidang IT dengan keahlian yang matang dan terpercaya. Dalam keseharian, saya aktif dalam praktik lab jaringan, simulasi server, dan ikut serta menggali teknologi informasi untuk meningkatkan skill dan pengalaman praktis.
+  </div>
 </div>
 
 <footer class="fade-text">
@@ -226,13 +194,15 @@ footer{
 <script>
 // ===== AUTO ACTIVE MENU =====
 const currentPage = location.pathname.split("/").pop();
+
 document.querySelectorAll(".nav-links a").forEach(link=>{
-  if(link.getAttribute("href") === currentPage){
+  const linkPage = link.getAttribute("href");
+  if(linkPage === currentPage){
     link.classList.add("active");
   }
 });
 
-// DARK MODE
+// DARK MODE + ICON
 const toggleBtn = document.getElementById('themeToggle');
 
 function setTheme(mode){
@@ -246,22 +216,29 @@ function setTheme(mode){
   localStorage.setItem('theme', mode);
 }
 
-setTheme(localStorage.getItem('theme') || 'light');
+const savedTheme = localStorage.getItem('theme') || 'light';
+setTheme(savedTheme);
 
 toggleBtn.addEventListener('click', () => {
   const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
   setTheme(newTheme);
 });
 
-// Fade scroll
+// Fade Scroll
 const faders=document.querySelectorAll('.fade-text');
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    entry.target.classList.toggle('visible', entry.isIntersecting);
-  });
-},{threshold:0.2});
+const appearOptions={threshold:0.2};
 
-faders.forEach(el=>observer.observe(el));
+const appearOnScroll=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(!entry.isIntersecting){
+      entry.target.classList.remove('visible');
+    }else{
+      entry.target.classList.add('visible');
+    }
+  });
+}, appearOptions);
+
+faders.forEach(fader=>appearOnScroll.observe(fader));
 </script>
 
 </body>
