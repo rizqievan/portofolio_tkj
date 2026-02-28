@@ -31,7 +31,7 @@ body{
   overflow-x:hidden;
 }
 
-/* ===== NAVBAR (SAMA SEPERTI HALAMAN LAIN) ===== */
+/* ===== NAVBAR ===== */
 nav{
   display:flex;
   justify-content:space-between;
@@ -56,9 +56,33 @@ nav a{
   text-decoration:none;
   color:var(--text);
   font-weight:500;
+  position:relative;
+  padding-bottom:6px;
 }
 nav a:hover{color:var(--primary);}
 
+/* ===== INDIKATOR GARIS ===== */
+nav a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-4px;
+  width:0%;
+  height:3px;
+  background:var(--primary);
+  border-radius:3px;
+  transition:.3s ease;
+}
+
+nav a:hover::after{
+  width:100%;
+}
+
+nav a.active::after{
+  width:100%;
+}
+
+/* Toggle */
 .toggle{
   background:var(--primary);
   border:none;
@@ -84,17 +108,14 @@ h2{
   color:var(--primary);
 }
 
-/* Skill Item */
-.skill{
-  margin-bottom:25px;
-}
-
+/* Skill */
+.skill{margin-bottom:25px;}
 .skill p{
   margin-bottom:8px;
   font-weight:500;
 }
 
-/* Progress Bar */
+/* Progress */
 .progress{
   height:12px;
   background:#cbd5e1;
@@ -110,7 +131,7 @@ h2{
   transition:2s;
 }
 
-/* ===== FOOTER ===== */
+/* Footer */
 footer{
   margin-top:40px;
   text-align:center;
@@ -119,7 +140,7 @@ footer{
   color:white;
 }
 
-/* Fade Animasi */
+/* Fade */
 .fade-text{
   opacity:0;
   transform:translateY(30px);
@@ -130,7 +151,7 @@ footer{
   transform:translateY(0);
 }
 
-/* ===== MOBILE ===== */
+/* Mobile */
 @media(max-width:768px){
   nav{
     flex-direction:column;
@@ -161,55 +182,16 @@ footer{
 
 <h2 class="fade-text">Keahlian Teknis</h2>
 
-<div class="skill fade-text">
-  <p>Perakitan Komponen Komputer</p>
-  <div class="progress"><span data-width="95%"></span></div>
-</div>
-
-<div class="skill fade-text">
-  <p>Instalasi Operating System</p>
-  <div class="progress"><span data-width="90%"></span></div>
-</div>
-
-<div class="skill fade-text">
-  <p>Konfigurasi Jaringan</p>
-  <div class="progress"><span data-width="85%"></span></div>
-</div>
-
-<div class="skill fade-text">
-  <p>Firewall & Keamanan Jaringan</p>
-  <div class="progress"><span data-width="80%"></span></div>
-</div>
-
-<div class="skill fade-text">
-  <p>Linux Debian</p>
-  <div class="progress"><span data-width="75%"></span></div>
-</div>
-
-<div class="skill fade-text">
-  <p>Instalasi LAN</p>
-  <div class="progress"><span data-width="80%"></span></div>
-</div>
-
-<div class="skill fade-text">
-  <p>HTML & CSS</p>
-  <div class="progress"><span data-width="70%"></span></div>
-</div>
-
-<div class="skill fade-text">
-  <p>Python Dasar</p>
-  <div class="progress"><span data-width="65%"></span></div>
-</div>
-
-<div class="skill fade-text">
-  <p>Perangkat Jaringan</p>
-  <div class="progress"><span data-width="60%"></span></div>
-</div>
-
-<div class="skill fade-text">
-  <p>Server</p>
-  <div class="progress"><span data-width="55%"></span></div>
-</div>
+<div class="skill fade-text"><p>Perakitan Komponen Komputer</p><div class="progress"><span data-width="95%"></span></div></div>
+<div class="skill fade-text"><p>Instalasi Operating System</p><div class="progress"><span data-width="90%"></span></div></div>
+<div class="skill fade-text"><p>Konfigurasi Jaringan</p><div class="progress"><span data-width="85%"></span></div></div>
+<div class="skill fade-text"><p>Firewall & Keamanan Jaringan</p><div class="progress"><span data-width="80%"></span></div></div>
+<div class="skill fade-text"><p>Linux Debian</p><div class="progress"><span data-width="75%"></span></div></div>
+<div class="skill fade-text"><p>Instalasi LAN</p><div class="progress"><span data-width="80%"></span></div></div>
+<div class="skill fade-text"><p>HTML & CSS</p><div class="progress"><span data-width="70%"></span></div></div>
+<div class="skill fade-text"><p>Python Dasar</p><div class="progress"><span data-width="65%"></span></div></div>
+<div class="skill fade-text"><p>Perangkat Jaringan</p><div class="progress"><span data-width="60%"></span></div></div>
+<div class="skill fade-text"><p>Server</p><div class="progress"><span data-width="55%"></span></div></div>
 
 </div>
 
@@ -218,7 +200,16 @@ footer{
 </footer>
 
 <script>
-// DARK MODE + ICON
+// ===== AUTO ACTIVE MENU =====
+const currentPage = location.pathname.split("/").pop();
+
+document.querySelectorAll(".nav-links a").forEach(link=>{
+  if(link.getAttribute("href") === currentPage){
+    link.classList.add("active");
+  }
+});
+
+// DARK MODE
 const toggleBtn = document.getElementById('themeToggle');
 
 function setTheme(mode){
@@ -232,31 +223,24 @@ function setTheme(mode){
   localStorage.setItem('theme', mode);
 }
 
-const savedTheme = localStorage.getItem('theme') || 'light';
-setTheme(savedTheme);
+setTheme(localStorage.getItem('theme') || 'light');
 
 toggleBtn.addEventListener('click', () => {
   const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
   setTheme(newTheme);
 });
 
-// Fade Scroll
+// Fade scroll
 const faders=document.querySelectorAll('.fade-text');
-const appearOptions={threshold:0.2};
-
-const appearOnScroll=new IntersectionObserver(entries=>{
+const observer=new IntersectionObserver(entries=>{
   entries.forEach(entry=>{
-    if(!entry.isIntersecting){
-      entry.target.classList.remove('visible');
-    }else{
-      entry.target.classList.add('visible');
-    }
+    entry.target.classList.toggle('visible', entry.isIntersecting);
   });
-}, appearOptions);
+},{threshold:0.2});
 
-faders.forEach(fader=>appearOnScroll.observe(fader));
+faders.forEach(el=>observer.observe(el));
 
-// Progress Bar Animation
+// Progress animation
 window.addEventListener('load',()=>{
   document.querySelectorAll('.progress span').forEach(el=>{
     el.style.width = el.dataset.width;
