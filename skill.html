@@ -10,15 +10,13 @@
 :root{
   --bg:#f8fafc;
   --text:#0f172a;
-  --card:#ffffff;
   --primary:#2563eb;
   --footer:#1e293b;
 }
 body.dark{
   --bg:#0f172a;
   --text:#e2e8f0;
-  --card:rgba(30,41,59,0.8);
-  --footer:#111827;
+  --footer:rgba(0, 0, 0, 0.6);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -42,6 +40,11 @@ nav{
   position:sticky;
   top:0;
   z-index:1000;
+  transition:.3s;
+}
+body.dark nav{
+  background:rgba(0,0,0,0.6);
+  border-bottom:1px solid rgba(255,255,255,0.15);
 }
 
 .nav-links{
@@ -60,7 +63,6 @@ nav a{
   padding-bottom:6px;
 }
 nav a:hover{color:var(--primary);}
-
 nav a::after{
   content:"";
   position:absolute;
@@ -139,7 +141,7 @@ h2{
   height:100%;
   width:0;
   background:var(--primary);
-  transition:width 2s ease;
+  transition:width 1.8s ease;
 }
 
 /* FOOTER */
@@ -156,7 +158,6 @@ footer{
   opacity:0;
   transform:translateY(30px);
   transition:opacity .8s ease, transform .8s ease;
-  will-change: opacity, transform;
 }
 .fade-text.visible{
   opacity:1;
@@ -172,20 +173,20 @@ footer{
 <body>
 
 <nav>
-  <strong>Portofolio TKJ</strong>
+<strong>Portofolio TKJ</strong>
 
-  <div class="nav-links">
-    <a href="index.html" class="fade-text">Beranda</a>
-    <a href="tentang.html" class="fade-text">Tentang</a>
-    <a href="skill.html" class="fade-text">Skill</a>
-    <a href="kontak.html" class="fade-text">Kontak Saya</a>
-  </div>
+<div class="nav-links">
+<a href="index.html" class="fade-text">Beranda</a>
+<a href="tentang.html" class="fade-text">Tentang</a>
+<a href="skill.html" class="fade-text">Skill</a>
+<a href="kontak.html" class="fade-text">Kontak Saya</a>
+</div>
 
-  <div class="theme-toggle fade-text" id="themeToggle">
-    <div class="toggle-indicator"></div>
-    <span class="icon sun">☀︎</span>
-    <span class="icon moon">⏾</span>
-  </div>
+<div class="theme-toggle fade-text" id="themeToggle">
+<div class="toggle-indicator"></div>
+<span class="icon sun">☀︎</span>
+<span class="icon moon">⏾</span>
+</div>
 </nav>
 
 <div class="container">
@@ -213,48 +214,48 @@ footer{
 // DARK MODE
 const toggle=document.getElementById("themeToggle");
 toggle.onclick=()=>{
-  document.body.classList.toggle("dark");
-  localStorage.setItem("theme",
-    document.body.classList.contains("dark")?"dark":"light");
+document.body.classList.toggle("dark");
+localStorage.setItem("theme",
+document.body.classList.contains("dark")?"dark":"light");
 };
 if(localStorage.getItem("theme")==="dark"){
-  document.body.classList.add("dark");
+document.body.classList.add("dark");
 }
 
 // ACTIVE MENU
 let currentPage=location.pathname.split("/").pop();
 if(currentPage===""||currentPage==="/"){currentPage="index.html";}
 document.querySelectorAll(".nav-links a").forEach(link=>{
-  if(link.getAttribute("href")===currentPage){
-    link.classList.add("active");
-  }
+if(link.getAttribute("href")===currentPage){
+link.classList.add("active");
+}
 });
 
-// FADE + PROGRESS ANIMATION
+// FADE
 const faders=document.querySelectorAll('.fade-text');
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    entry.target.classList.toggle('visible', entry.isIntersecting);
-
-    if(entry.isIntersecting && entry.target.classList.contains('skill')){
-      const bar=entry.target.querySelector('.progress span');
-      if(bar){
-        bar.style.width=bar.dataset.width;
-      }
-    }
-
-    if(!entry.isIntersecting && entry.target.classList.contains('skill')){
-      const bar=entry.target.querySelector('.progress span');
-      if(bar){
-        bar.style.width="0";
-      }
-    }
-  });
-},{
-  threshold:0.15,
-  rootMargin:"0px 0px -40px 0px"
+const fadeObserver=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+entry.target.classList.toggle('visible', entry.isIntersecting);
 });
-faders.forEach(el=>observer.observe(el));
+},{threshold:0.15});
+faders.forEach(el=>fadeObserver.observe(el));
+
+// PROGRESS FIX STABLE
+const skills=document.querySelectorAll('.skill');
+const progressObserver=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+const bar=entry.target.querySelector('.progress span');
+if(!bar) return;
+
+if(entry.isIntersecting){
+bar.style.width=bar.dataset.width;
+}else{
+bar.style.width="0";
+}
+});
+},{threshold:0.4});
+skills.forEach(skill=>progressObserver.observe(skill));
+
 </script>
 
 </body>
