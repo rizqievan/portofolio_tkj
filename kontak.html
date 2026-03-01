@@ -4,13 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kontak Saya | Portofolio TKJ</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- FONT AWESOME UNTUK IKON -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
 :root{
   --bg:#f8fafc;
   --text:#0f172a;
-  --card:#ffffff;
   --primary:#2563eb;
   --footer:#1e293b;
   --whatsapp:#25d366;
@@ -18,7 +21,6 @@
 body.dark{
   --bg:#0f172a;
   --text:#e2e8f0;
-  --card:rgba(30,41,59,0.8);
   --footer:#111827;
 }
 
@@ -61,7 +63,6 @@ nav a{
   padding-bottom:6px;
 }
 nav a:hover{color:var(--primary);}
-
 nav a::after{
   content:"";
   position:absolute;
@@ -91,14 +92,12 @@ nav a.active::after{width:100%;}
   cursor: pointer;
   transition: .3s;
 }
-
 .theme-toggle .icon{
   font-size: 16px;
   z-index: 2;
   color: #6b7280;
   pointer-events: none;
 }
-
 .toggle-indicator{
   position: absolute;
   width: 28px;
@@ -109,7 +108,6 @@ nav a.active::after{width:100%;}
   transition: .35s ease;
   box-shadow: 0 4px 10px rgba(0,0,0,.15);
 }
-
 body.dark .theme-toggle{ background:#111827; }
 body.dark .toggle-indicator{
   left:38px;
@@ -127,11 +125,7 @@ body.dark .theme-toggle .icon.moon{color:#fff;}
 }
 
 h2{ margin-bottom:10px; color:var(--primary); }
-
-.container p{
-  margin-bottom:20px;
-  font-weight:500;
-}
+.container p{ margin-bottom:20px; font-weight:500; }
 
 /* MAP */
 .map-container{
@@ -143,12 +137,14 @@ h2{ margin-bottom:10px; color:var(--primary); }
   overflow:hidden;
   box-shadow:0 12px 30px rgba(0,0,0,.18);
 }
-
 iframe{ width:100%; height:100%; border:0; }
 
-/* WhatsApp */
+/* WhatsApp Button */
 .whatsapp-btn{
-  display:inline-block;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
   background:var(--whatsapp);
   color:white;
   padding:15px 30px;
@@ -157,6 +153,10 @@ iframe{ width:100%; height:100%; border:0; }
   text-decoration:none;
   transition:.3s;
   box-shadow:0 8px 18px rgba(37,211,102,.35);
+  font-size:16px;
+}
+.whatsapp-btn i{
+  font-size:20px;
 }
 .whatsapp-btn:hover{
   background:#1ebe57;
@@ -165,11 +165,12 @@ iframe{ width:100%; height:100%; border:0; }
 
 /* FOOTER */
 footer{
-  margin-top:40px;
-  padding:20px;
+  width:100%;
   background:var(--footer);
   color:white;
   text-align:center;
+  padding:20px 0;
+  margin-top:40px;
 }
 
 /* FADE */
@@ -218,8 +219,10 @@ footer{
     <iframe src="https://www.google.com/maps?q=-8.109377,111.710771&hl=id&z=15&output=embed" loading="lazy"></iframe>
   </div>
 
+  <!-- TOMBOL WHATSAPP DENGAN IKON -->
   <a href="https://wa.me/6281234567890" target="_blank" class="whatsapp-btn fade-text">
-    Hubungi via WhatsApp
+    <i class="fab fa-whatsapp"></i>
+    WhatsApp
   </a>
 </div>
 
@@ -248,9 +251,8 @@ document.querySelectorAll(".nav-links a").forEach(link=>{
  }
 });
 
-// FADE SCROLL FIX
+// FADE
 const faders=document.querySelectorAll('.fade-text');
-
 const observer=new IntersectionObserver((entries)=>{
  entries.forEach(entry=>{
   if(entry.isIntersecting){
@@ -260,7 +262,6 @@ const observer=new IntersectionObserver((entries)=>{
   }
  });
 },{threshold:0.2});
-
 faders.forEach(el=>observer.observe(el));
 </script>
 
