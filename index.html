@@ -10,7 +10,7 @@
   --bg:#f8fafc;--text:#0f172a;--card:#ffffff;--primary:#2563eb;--footer:#1e293b;
 }
 body.dark{
-  --bg:#0f172a;--text:#e2e8f0;--card:rgba(30,41,59,0.8);--primary:#2563eb;--footer:#111827;
+  --bg:#0f172a;--text:#e2e8f0;--card:rgba(30,41,59,0.8);--primary:#2563eb;--footer:rgba(0, 0, 0, 0.6);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
@@ -32,6 +32,18 @@ nav{
   position:sticky;
   top:0;
   z-index:1000;
+}
+
+/* ===== HEADER DARK MODE (BARU) ===== */
+body.dark nav{
+  background:rgba(0, 0, 0, 0.6);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,0.15);
+}
+
+body.dark nav a,
+body.dark nav strong{
+  color:white;
 }
 
 .nav-links{
@@ -226,7 +238,7 @@ document.querySelectorAll(".nav-links a").forEach(link=>{
   }
 });
 
-// FADE SCROLL (FIXED)
+// FADE SCROLL
 const faders=document.querySelectorAll('.fade-text');
 const observer=new IntersectionObserver(entries=>{
   entries.forEach(entry=>{
