@@ -21,7 +21,7 @@
 body.dark{
   --bg:#0f172a;
   --text:#e2e8f0;
-  --footer:#111827;
+  --footer:rgba(0, 0, 0, 0.6);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -45,6 +45,14 @@ nav{
   position:sticky;
   top:0;
   z-index:1000;
+  transition:.3s;
+}
+
+/* HEADER SAAT DARK MODE */
+body.dark nav{
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,0.15);
 }
 
 .nav-links{
@@ -219,7 +227,6 @@ footer{
     <iframe src="https://www.google.com/maps?q=-8.109377,111.710771&hl=id&z=15&output=embed" loading="lazy"></iframe>
   </div>
 
-  <!-- TOMBOL WHATSAPP DENGAN IKON -->
   <a href="https://wa.me/6281234567890" target="_blank" class="whatsapp-btn fade-text">
     <i class="fab fa-whatsapp"></i>
     WhatsApp
